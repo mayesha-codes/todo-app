@@ -1,0 +1,33 @@
+# Virtual environment
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs & Debugging
+logs/
+*.log
+*.out
+
+# Environment variables & Secrets
+.env
+instance/config.py
+
+# MySQL configuration & backup files (if used)
+*.sql
+*.dump
+*.bak
+
+# Dependency files (optional)
+pip-selfcheck.json
+
+# VS Code / JetBrains IDE files (optional)
+.vscode/
+.idea/
+
+# MacOS & Windows system files (optional)
+.DS_Store
+Thumbs.db
