@@ -17,13 +17,13 @@ def add_user(user:schemas.UserCreate, db:Session=Depends(get_db)):
     # Create and return the new user
     return crud.create_user(db=db,user=user)
 
-# ✅ Route to Get a User by ID
+# ✅ Route to Get all Users 
 @router.get("/users/", response_model=list[schemas.User])
 def get_users(skip:int=0, limit:int=0, db:Session=Depends(get_db)):
     users = crud.get_users(db,skip=skip,limit=limit)
     return users
 
-
+# ✅ Route to Get a User by ID
 @router.get("/users/{user_id}/",response_model=schemas.User)
 def get_user(user_id:int, db:Session=Depends(get_db)):
     db_user = crud.get_user(db,user_id =user_id )
@@ -31,7 +31,7 @@ def get_user(user_id:int, db:Session=Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-
+# ✅ Route to Create a todo by a specific user
 @router.post("/users/{user_id}/todos/",response_model=schemas.Todo)
 def post_todo_for_user(user_id:int, todo:schemas.TodoCreate, db:Session=Depends(get_db)):
-    return crud.create_user_todo(db=db,user_id=user_id, todo=todo)
+    return crud.update_todo(db=db,todo=todo,owner_id=user_id)
