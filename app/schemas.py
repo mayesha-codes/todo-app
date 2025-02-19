@@ -19,8 +19,7 @@ class SubTodoUpdate(SubTodoBase):
     title: Optional[str] = None
     description: Optional[str] = None
     thumbnail: Optional[str] = None
-    due_date_time: Optional[datetime] = None
-    duration=Otional[int]=None
+    duration=Optional[int]=None
 
 # ✅ Schema for SubTodo Response (Includes `id`, timestamps, and `owner_id`)
 class SubTodo(SubTodoBase):
@@ -29,7 +28,6 @@ class SubTodo(SubTodoBase):
     updated_at: datetime
     owner_id: int  # Foreign key linking to Todo
     duration:int
-    subtodos: List[SubTodo] = []  # User has multiple todos
     class Config:
         orm_mode = True  # Allows SQLAlchemy model conversion
 
@@ -53,7 +51,7 @@ class TodoUpdate(TodoBase):
     description: Optional[str] = None
     thumbnail: Optional[str] = None
     due_date_time: Optional[datetime] = None
-    time=Otional[int]=None
+    time=Optional[int]=None
 
 # ✅ Schema for Todo Response (Includes `id`, timestamps, and `owner_id`)
 class Todo(TodoBase):
@@ -62,7 +60,7 @@ class Todo(TodoBase):
     updated_at: datetime
     owner_id: int  # Foreign key linking to User
     time:int
-    subtodos: List[SubTodo] = []  # User has multiple todos
+    subtodos: List[SubTodo] = []  # todo has multiple subtodos
     class Config:
         orm_mode = True  # Allows SQLAlchemy model conversion
 

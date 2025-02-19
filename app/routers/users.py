@@ -31,7 +31,3 @@ def get_user(user_id:int, db:Session=Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-# ✅ Route to Create a todo by a specific user
-@router.post("/users/{user_id}/todos/",response_model=schemas.Todo)
-def post_todo_for_user(user_id:int, todo:schemas.TodoCreate, db:Session=Depends(get_db)):
-    return crud.update_todo(db=db,todo=todo,owner_id=user_id)
