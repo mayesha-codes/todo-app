@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models import User, Todo
+from app.models import User, Todo,SubTodo
 from app.schemas import *
 from typing import List, Optional
 
@@ -18,8 +18,12 @@ def create_user(db: Session, user: UserCreate):
     return db_user
 
 # ✅ Get a user by ID
-def get_user(db: Session, user_id: int) -> Optional[User]:
+def get_user_by_id(db: Session, user_id: int) -> Optional[User]:
     return db.query(User).filter(User.user_id == user_id).first()
+
+# ✅ Get a user by Email
+def get_user_by_email(db: Session, email: str) -> Optional[User]:
+    return db.query(User).filter(User.email == email).first()
 
 # ✅ Get all users
 def get_users(db: Session,skip:int=0,limit:int=10) -> List[User]:
@@ -34,7 +38,7 @@ def create_todo(db: Session, todo: TodoCreate, owner_id: int):
         description=todo.description,
         thumbnail=todo.thumbnail,
         due_date_time=todo.due_date_time,
-        owner_id=owner_id,
+        parent_user_id=owner_id,
     )
     db.add(db_todo)
     db.commit()
@@ -47,7 +51,7 @@ def get_todo(db: Session, todo_id: int) -> Optional[Todo]:
 
 # ✅ Get all todos for a user
 def get_todos_by_user(db: Session, owner_id: int,skip:int=0,limit:int=10) -> List[Todo]:
-    return db.query(Todo).filter(Todo.owner_id == owner_id).offset(skip).limit(limit).all()
+    return db.query(Todo).filter(Todo.parent_user_id == owner_id).offset(skip).limit(limit).all()
 
 # ✅ Update a todo
 def update_todo(db: Session, todo_id: int, todo_update: TodoUpdate):
@@ -78,7 +82,7 @@ def create_subtodo(db: Session, subtodo: SubTodoCreate, parent_todo_id: int):
         description=subtodo.description,
         thumbnail=subtodo.thumbnail,
         duration=subtodo.duration,
-        owner_id=parent_todo_id,
+        parent_todo_id=parent_todo_id,
     )
     db.add(db_subtodo)
     db.commit()
@@ -87,7 +91,7 @@ def create_subtodo(db: Session, subtodo: SubTodoCreate, parent_todo_id: int):
 
 # ✅ Get all subtodos for a todo
 def get_subtodos_for_todo(db: Session, parent_todo_id: int) -> List[SubTodo]:
-    return db.query(SubTodo).filter(SubTodo.owner_id == parent_todo_id).all()
+    return db.query(SubTodo).filter(SubTodo.parent_todo_id == parent_todo_id).all()
 
 # ✅ Update a sub todo
 def update_subtodo(db: Session, subtodo_id: int, subtodo_update: SubTodoUpdate):

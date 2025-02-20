@@ -9,7 +9,7 @@ router = APIRouter()
 # ✅ Route to Create a todo by a specific user
 @router.post("/users/{user_id}/todos/",response_model=schemas.Todo)
 def post_todo_for_user(user_id:int, todo:schemas.TodoCreate, db:Session=Depends(get_db)):
-    return crud.update_todo(db=db,todo=todo,owner_id=user_id)
+    return crud.create_todo(db=db,todo=todo,owner_id=user_id)
 
 # ✅ Route to Get Todo by id
 @router.get("/todo/{todo_id}/", response_model=schemas.Todo)
@@ -38,13 +38,3 @@ def delete_todo(todo_id:int,db:Session=Depends(get_db)):
     if not deleted_todo:
         raise HTTPException(status_code=404, detail="Todo not found")
     return deleted_todo
-
-# ✅ Route to create a SubTodo for a specific todo
-@router.post("todo/{todo_id}/subtodo/",response_model=schemas.SubTodo)
-def create_subtodo(todo_id:int,sub_todo:schemas.SubTodoCreate,db:Session=Depends(get_db)):
-    #check if the parent todo exist
-    parent_todo=crud.get_todo(db,todo_id=todo_id)
-    if not parent_todo:
-        raise HTTPException(status_code=404,detail="Todo not found")
-    
-    return crud.create_subtodo(db,parent_todo_id=todo_id,sub_todo=sub_todo)
