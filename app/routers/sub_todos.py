@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Depends,HTTPException
 from sqlalchemy.orm import Session
-from app import crud, schemas,ai
-from app.database import get_db  # Ensure get_db is inside database.py
+from .. import crud, schemas,ai
+from ..database import get_db  # Ensure get_db is inside database.py
 
 
 router = APIRouter()
 
 
 # ✅ Route to generate a SubTodo for a specific todo by ai model
-@router.post("todo/{todo_id}/generate_subtodo/")
-def generate_subtodo(todo_id:int,sub_todo:schemas.SubTodoCreate,db:Session=Depends(get_db)):
+@router.post("/todo/{todo_id}/generate_subtodo/")
+def generate_subtodo(todo_id:int,db:Session=Depends(get_db)):
     #check if the parent todo exist
     parent_todo=crud.get_todo(db,todo_id=todo_id)
     if not parent_todo:
@@ -17,11 +17,7 @@ def generate_subtodo(todo_id:int,sub_todo:schemas.SubTodoCreate,db:Session=Depen
     # Generate subtodos using AI
     gen_subtodo=ai.generate_subtodos(parent_todo.title,parent_todo.description)
     # Save generated sub-todos
-    created_subtodos=[]
-    for gen_subtodo in gen_subtodo:
-        sub_todo=crud.create_subtodo(db,parent_todo_id=todo_id,sub_todo=sub_todo)
-        created_subtodos.append(sub_todo)
-    return created_subtodos
+    return gen_subtodo
 # ✅ Route to create a SubTodo for a specific todo
 @router.post("todo/{todo_id}/subtodo/",response_model=schemas.SubTodo)
 def create_subtodo(todo_id:int,sub_todo:schemas.SubTodoCreate,db:Session=Depends(get_db)):

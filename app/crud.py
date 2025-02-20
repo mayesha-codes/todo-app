@@ -38,6 +38,7 @@ def create_todo(db: Session, todo: TodoCreate, owner_id: int):
         description=todo.description,
         thumbnail=todo.thumbnail,
         due_date_time=todo.due_date_time,
+        duration=todo.duration,
         parent_user_id=owner_id,
     )
     db.add(db_todo)
