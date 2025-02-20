@@ -3,8 +3,9 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, String,func,DateTim
 from sqlalchemy.orm import relationship
 
 #Base is used to define ORM models
-from sqlalchemy.ext.declarative import declarative_base
-Base = declarative_base()
+from sqlalchemy.orm import DeclarativeBase
+class Base(DeclarativeBase):
+    pass
 
 class User(Base):
     __tablename__ = "users"

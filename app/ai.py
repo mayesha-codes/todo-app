@@ -1,5 +1,5 @@
 import google.generativeai as genai
-from app.schemas import *
+from .schemas import *
 from dotenv import load_dotenv
 # Loading gemini api key from Environment
 load_dotenv()

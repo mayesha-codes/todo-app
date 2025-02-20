@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models import User, Todo,SubTodo
-from app.schemas import *
+from .models import User, Todo,SubTodo
+from .schemas import UserCreate, TodoCreate, TodoUpdate, SubTodoCreate, SubTodoUpdate
 from typing import List, Optional
 
 
